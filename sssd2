@@ -680,6 +680,21 @@ Internal.Notify.Push = function(arg, arg2)
         end
     end
 
+    -- FIX: Resolve the parent safely
+    local parentGui = Internal.Env.NotifyGui
+    local parentTarget = parentGui
+    if parentGui then
+        local container = parentGui:FindFirstChild("Container")
+        if container then
+            parentTarget = container
+        end
+    elseif LocalPlayer then
+        local pGui = LocalPlayer:FindFirstChild("PlayerGui")
+        if pGui then
+            parentTarget = pGui
+        end
+    end
+
     local cardProps = {
         Name = "Notification",
         AnchorPoint = Vector2.new(profile.ax, profile.ay),
@@ -688,6 +703,7 @@ Internal.Notify.Push = function(arg, arg2)
         GroupTransparency = 1,
         BackgroundTransparency = 0.02,
         BorderSizePixel = 0,
+        Parent = parentTarget,
     }
     local cardChildren = {
         Internal.Util.Corner(10),
@@ -696,7 +712,6 @@ Internal.Notify.Push = function(arg, arg2)
     }
     local card = Internal.Util.New("CanvasGroup", cardProps, cardChildren)
     Internal.Theme.Bind(card, "BackgroundColor3", "Surface")
-    card.Parent = Internal.Env.NotifyGui and Internal.Env.NotifyGui:FindFirstChild("Container") or Internal.Env.PlayerGuiParent()
 
     local iconFrame = Internal.Util.New("Frame", {
         Size = UDim2.fromOffset(26, 26),
