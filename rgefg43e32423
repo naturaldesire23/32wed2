@@ -2059,7 +2059,7 @@ local function setupMediaSystem()
         local wallpaper = win.Wallpaper
         local video = win.BgVideo
         if not canvas then return end
-        if wallpaper and wallpaper.Image <> "" then wallpaper.ImageTransparency = 1 - media.Opacity end
+        if wallpaper and wallpaper.Image ~= "" then wallpaper.ImageTransparency = 1 - media.Opacity end
         canvas.GroupTransparency = video and video.Visible and 1 - media.Opacity or 0
         if media.Active then canvas.Visible = media.Opacity > 0.004 end
     end
